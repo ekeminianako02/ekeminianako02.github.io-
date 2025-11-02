@@ -1,1 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #2e7d32;
+    background: #f1f8e9;
+}
+
+nav {
+    background: #2e7d32;
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.logo {
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.links a:hover {
+    background: #4caf50;
+}
+
+.section-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+#home {
+    background: #4caf50;
+    color: white;
+    text-align: center;
+    padding: 3rem 0;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: 2px solid #2e7d32;
+    border-radius: 5px;
+    background: white;
+    color: #2e7d32;
+    font-family: Helvetica;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #2e7d32;
+    color: white;
+}
+
+.parent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.child {
+    background: white;
+    padding: 1.5rem;
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+}
+
+.sticky-box {
+    position: relative;
+    background: #e8f5e9;
+    border: 2px dashed #4caf50;
+}
+
+.sticky-btn {
+    position: sticky;
+    bottom: 20px;
+    text-align: center;
+}
+
+.sticky-btn button {
+    background: #2e7d32;
+    color: white;
+    border: none;
+}
+
+.shape {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: #8bc34a;
+    border-radius: 50%;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.shape:nth-child(1) {
+    top: 100px;
+    left: 10%;
+}
+
+.shape:nth-child(2) {
+    bottom: 100px;
+    right: 10%;
+}
+
+@media (max-width: 768px) {
+    .parent {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .links a {
+        margin: 0 0.5rem;
+    }
+}
