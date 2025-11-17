@@ -78,7 +78,33 @@
         </section>
     </div>
 
+   <script>
+    let isOpen = true; 
 
+    function toggleNav() {
+        const nav = document.getElementById('sideNav');
+        const mainContent = document.getElementById('mainContent');
+        const menu = document.getElementById('menu');
+        
+        isOpen = !isOpen;
+        
+        if (isOpen) {
+            // Show navigation
+            nav.style.transform = 'translateX(0)';
+            mainContent.style.left = '25vw';
+            mainContent.style.width = '65vw';
+            menu.style.left = 'calc(20vw/2)';
+            document.body.classList.remove('nav-open');
+        } else {
+            // Hide navigation
+            nav.style.transform = 'translateX(-100%)';
+            mainContent.style.left = '0';
+            mainContent.style.width = '90vw';
+            menu.style.left = '20px';
+            document.body.classList.add('nav-open');
+        }
+    }
+    </script>
 </body>
 
 </html>
