@@ -32,6 +32,9 @@ body {
     margin: 24px;
     width: 65vw; 
     font-size: 2rem; 
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
 }
 
 
@@ -59,6 +62,9 @@ nav {
     width: 25vw; 
     height: 100vh; 
     font-size: 3rem; 
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    z-index: 9;
 }
 
 
@@ -87,19 +93,22 @@ nav > ul  {
     border-radius: 50%;
     display: block;
     z-index: 10; 
+    cursor: pointer;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-nav {
-    z-index: 9;
-}
 
 #menu > span { 
     position: relative; 
     top: 50%;
     left: 50%; 
     transform: translate(-50%, -50%);
+    transition: transform 0.3s ease;
 }
 
+body.nav-open #menu span {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
 
 .navStyle > ul > li > a, a:visited{
     font-size: 2rem; 
@@ -260,6 +269,7 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/initial-letter*/
 }
 
 
+
 @media only screen and (max-width:600px){
 
     * {
@@ -274,64 +284,70 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/initial-letter*/
         margin: 0px; 
         padding: 0px;
         height: 100vh;
-
     }
 
-    nav{
-        position: fixed; 
-        top: 0px; 
-        left: 0px;
-        height: 36px;
-        width: 100vw;
-        z-index: 1;
+
+    nav.navStyle {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw !important;
+        height: 100vh;
+        transform: translateX(-100%);
+        z-index: 8;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    nav.navStyle.open {
+        transform: translateX(0);
     }
 
-    nav > #menu  {
+    #menu {
+        display: block !important;
+        position: fixed;
+        top: 20px;
+        left: 20px !important;
+        z-index: 10;
+    }
+
+
+    nav.navStyle:not(.open) > ul {
         display: none;
+    }
+    
+    nav.navStyle.open > ul {
+        display: block !important;
+        flex-direction: column;
+        margin-top: 80px;
+        gap: 30px;
+        text-align: center;
     }
 
     .container-content{
         position: relative; 
         top: 12vh; 
-        left: 0px;
+        left: 0px !important;
         padding: 36px; 
         margin: 0px;
-        width: 60%;
+        width: 80% !important;
         font-size: 2rem; 
+        transition: opacity 0.3s ease;
     }
     
-    nav > ul  { 
-
-
-        /* SO TRUE STORY CLASS. I had completed the entire lecture, and I noticed that my sound got corrupted!! Fun. */ 
-
-
-        display: flex; 
-        margin: 0 auto; /* this was the culprit!!! <-- check your margins when you're trying to do anything! */ 
-        gap: 20px; /* here is where I think the sound cuts off?*/ 
-
-        padding: 0px; 
-        text-align: center;
-        font-size: 3rem;
-        font-style: normal;
-        font-weight: 100;
-        letter-spacing: 9px;
-        list-style-type: none;
-        justify-content: center;    /* I also added some quality of life stuff like making it centered on top!*/ 
-        align-items: center; 
-    
+    body.nav-open .container-content {
+        opacity: 0.3;
+        pointer-events: none;
     }
 
     .navStyle > ul > li > a, a:visited{
         margin: 0 auto;
-        font-size: 2rem; 
+        font-size: 2.5rem; 
         color: var(--darkblue); 
         text-decoration: none;
     }
     
 
     .description {
-
         font-family: "DM Sans", sans-serif;
         color: #2D3142;
         font-size: 2rem;
@@ -339,6 +355,20 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/initial-letter*/
         font-weight: 150;
         line-height: 36px;
         z-index: -10;
+    }
     
+ 
+    nav.navStyle > ul {
+        display: block;
+        margin-left: 0px;
+        margin-top: 80px; 
+        padding: 0px; 
+        text-align: center;
+        font-size: 3rem;
+        font-style: normal;
+        font-weight: 100;
+        line-height: 150%;
+        letter-spacing: 9px;
+        list-style-type: none;
     }
 }
