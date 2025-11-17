@@ -371,4 +371,34 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/initial-letter*/
         letter-spacing: 9px;
         list-style-type: none;
     }
+
+.navStyle {
+    transform: translateX(0);
+}
+
+.navStyle > ul > li > a:hover {
+    color: white;
+    transition: color 0.3s ease;
+}
+
+#menu:hover {
+    background-color: var(--darkgrey);
+}
+
+
+@media only screen and (max-width:600px){
+    .navStyle > ul {
+        display: flex !important;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .navStyle:not(.open) > ul {
+        display: none !important;
+    }
+    
+    .navStyle.open > ul {
+        display: flex !important;
+    }
+}
 }
