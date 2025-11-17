@@ -1,0 +1,344 @@
+* {
+    --orange: #EF8354;
+    --darkblue: #2D3142; 
+    --darkgrey: #4F5D75; 
+    --lightgrey: #BFC0C0; 
+    font-size: 12px; 
+}
+
+body { 
+    background-color: white;
+   margin: 0px; 
+   /*margin shorthand for 
+    margin-top
+    margin-right
+    margin-bottom
+    margin-left */ 
+    padding: 0px; 
+
+    /* shorthand for padding 
+    padding-top
+    padding-right
+    padding-bottom
+    padding-left*/ 
+    font-size: 2rem; 
+
+}
+
+.container-content{
+    position: relative; 
+    left: 25vw; 
+    padding: 36px; 
+    margin: 24px;
+    width: 65vw; 
+    font-size: 2rem; 
+}
+
+
+
+#heading{
+
+    color: var(--orange); 
+   font-family: "DM Serif Display", serif;
+   font-size: 7rem;
+   line-height: 134.4px;  
+   text-transform: uppercase;
+   font-weight: 400;
+
+    
+}
+
+
+
+nav {
+    background-color: #EF8354;
+    font-family: "DM Sans", sans-serif;
+    position: fixed; 
+    top: 0px; 
+    left: 0px; 
+    width: 25vw; 
+    height: 100vh; 
+    font-size: 3rem; 
+}
+
+
+nav > ul  { 
+    margin-left: 0px;
+    margin-top: 121px; 
+    padding: 0px; 
+    text-align: center;
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 100;
+    line-height: 150%; /* 54px */
+    letter-spacing: 9px;
+    list-style-type: none;
+
+
+}
+
+ #menu { 
+    position: fixed; 
+    top: 60px; 
+    left: calc(20vw/2);
+    background-color: var(--lightgrey);
+    width: 60px; 
+    height: 60px; 
+    border-radius: 50%;
+    display: block;
+    z-index: 10; 
+}
+
+nav {
+    z-index: 9;
+}
+
+#menu > span { 
+    position: relative; 
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%);
+}
+
+
+.navStyle > ul > li > a, a:visited{
+    font-size: 2rem; 
+    color: var(--darkblue); 
+    text-decoration: none;
+}
+
+h1{
+
+    color: var(--darkgrey);
+    font-family: "DM Serif Display", serif;
+    text-transform: uppercase;
+    font-size: 5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 84px */
+    letter-spacing: 6px;
+
+}
+
+h2{ 
+
+    color: #4F5D75;
+    text-align: center;
+    font-family: "DM Serif Display", serif;
+    font-size: 4rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 67.2px */
+    letter-spacing: 4.8px;
+    
+    
+
+}
+
+h3{
+    color: var(--darkgrey);
+    text-transform: lowercase;
+    color: #4F5D75;
+    text-align: center;
+    font-family: "DM Serif Display", serif;
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 50.4px */
+    letter-spacing: 3.6px;
+
+}
+
+strong{
+
+    font-family: "DM Sans", sans-serif;
+    color:var(--orange); 
+    background-color: var(--darkblue); 
+    font-weight: 800; 
+    font-size: 2rem;
+
+}
+
+i{
+    font-family: "DM Sans", sans-serif;
+    color:var(--orange); 
+    background-color: var(--darkblue); 
+    font-weight: 300; 
+    font-size: 2rem; 
+
+}
+
+
+.description {
+
+    font-family: "DM Sans", sans-serif;
+    color: #2D3142;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 150;
+    line-height: 36px;
+
+}
+
+.description > div { 
+    font-size: 2rem;
+}
+
+.description > ul {
+
+    list-style: "▶ ";
+ 
+
+}
+.description > ul > li >  a:visited, a:active { 
+    color: var(--orange); 
+    text-decoration: none;
+    font-size: 2rem; 
+}
+
+.description > ul > li > a { 
+    font-family: "DM Sans", sans-serif;
+    color:var(--orange); 
+    background-color: var(--darkblue); 
+    font-weight: 800; 
+    text-decoration: none;
+    -webkit-text-stroke: 0px;
+    transition: color 2s, -webkit-text-stroke 2s; 
+    font-size: 2rem; 
+}
+
+.description > ul > li > a:hover { 
+    font-family: "DM Sans", sans-serif;
+    color: transparent; 
+    -webkit-text-stroke: 1px white; 
+    background-color: var(--darkblue); 
+    font-weight: 800; 
+    text-decoration: none;
+    font-size: 2rem; 
+
+}
+
+ section > a:visited, active { 
+    color: var(--orange); 
+    text-decoration: none;
+    font-size: 2rem; 
+}
+
+section >  div > a {
+    font-family: "DM Sans", sans-serif;
+    color:var(--orange); 
+    background-color: var(--darkblue); 
+    font-weight: 800; 
+    text-decoration: none;
+    -webkit-text-stroke: 0px;
+    transition: color 2s, -webkit-text-stroke 2s; 
+    font-size: 2rem;
+}
+
+section > div  > a:hover {
+
+    font-family: "DM Sans", sans-serif;
+    color: transparent; 
+    -webkit-text-stroke: 1px white; 
+    background-color: var(--darkblue); 
+    font-weight: 800; 
+    text-decoration: none;
+    font-size: 2rem; 
+}
+
+.description > div::first-letter {
+   
+    font-family: "DM Serif Display", serif;
+    font-size: 60px;
+    font-style: italic;
+    /* reference for initial letter 
+/* I just learned about the Initial Letter Property!
+https://developer.mozilla.org/en-US/docs/Web/CSS/initial-letter*/
+    -webkit-initial-letter: 2;
+    initial-letter: 2;
+
+}
+
+
+@media only screen and (max-width:600px){
+
+    * {
+        font-size: 10px;
+        overflow: visible;
+    }
+
+    body { 
+        position: relative; 
+        top: 0px; 
+        left: 0px; 
+        margin: 0px; 
+        padding: 0px;
+        height: 100vh;
+
+    }
+
+    nav{
+        position: fixed; 
+        top: 0px; 
+        left: 0px;
+        height: 36px;
+        width: 100vw;
+        z-index: 1;
+    }
+
+    nav > #menu  {
+        display: none;
+    }
+
+    .container-content{
+        position: relative; 
+        top: 12vh; 
+        left: 0px;
+        padding: 36px; 
+        margin: 0px;
+        width: 60%;
+        font-size: 2rem; 
+    }
+    
+    nav > ul  { 
+
+
+        /* SO TRUE STORY CLASS. I had completed the entire lecture, and I noticed that my sound got corrupted!! Fun. */ 
+
+
+        display: flex; 
+        margin: 0 auto; /* this was the culprit!!! <-- check your margins when you're trying to do anything! */ 
+        gap: 20px; /* here is where I think the sound cuts off?*/ 
+
+        padding: 0px; 
+        text-align: center;
+        font-size: 3rem;
+        font-style: normal;
+        font-weight: 100;
+        letter-spacing: 9px;
+        list-style-type: none;
+        justify-content: center;    /* I also added some quality of life stuff like making it centered on top!*/ 
+        align-items: center; 
+    
+    }
+
+    .navStyle > ul > li > a, a:visited{
+        margin: 0 auto;
+        font-size: 2rem; 
+        color: var(--darkblue); 
+        text-decoration: none;
+    }
+    
+
+    .description {
+
+        font-family: "DM Sans", sans-serif;
+        color: #2D3142;
+        font-size: 2rem;
+        font-style: normal;
+        font-weight: 150;
+        line-height: 36px;
+        z-index: -10;
+    
+    }
+}
