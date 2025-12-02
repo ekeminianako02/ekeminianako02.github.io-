@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Planner Pro with Maps</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="finalstyle.css">
+    <style>
+      
+        #map-container {
+            height: 400px;
+            width: 100%;
+            border-radius: var(--radius-lg);
+            margin: var(--space-lg) 0;
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .map-controls {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-md);
+        }
+        
+        .map-layer-control {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            cursor: pointer;
+        }
+        
+        .leaflet-container {
+            font-family: var(--font-base);
+        }
+        
+        .zone-marker {
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: var(--shadow-md);
+        }
+        
+        @media (max-width: 768px) {
+            #map-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <h1>City Planner Pro <span class="beta-tag">(with Maps)</span></h1>
+            <nav class="nav">
+                <button class="nav-btn active" data-page="home">Home</button>
+                <button class="nav-btn" data-page="zoning">Zoning</button>
+                <button class="nav-btn" data-page="map">Map View</button>
+                <button class="nav-btn" data-page="analytics">Analytics</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        <!-- Page Content (dynamically loaded) -->
+        <div id="page-content">
+            <!-- Home page will load here -->
+        </div>
+        
+        <!-- Map View -->
+        <div id="map-page" style="display: none;">
+            <h2>Interactive City Map</h2>
+            <div class="map-controls">
+                <button id="satellite-toggle" class="action-btn secondary-btn">
+                    Satellite View
+                </button>
+                <button id="draw-mode" class="action-btn secondary-btn">
+                    Draw Zones
+                </button>
+                <button id="measure-distance" class="action-btn secondary-btn">
+                    Measure Distance
+                </button>
+                <button id="clear-map" class="action-btn danger-btn">
+                    Clear Map
+                </button>
+            </div>
+            
+            <div class="map-layer-controls">
+                <label class="map-layer-control">
+                    <input type="checkbox" id="layer-residential" checked> Residential
+                </label>
+                <label class="map-layer-control">
+                    <input type="checkbox" id="layer-commercial" checked> Commercial
+                </label>
+                <label class="map-layer-control">
+                    <input type="checkbox" id="layer-industrial" checked> Industrial
+                </label>
+                <label class="map-layer-control">
+                    <input type="checkbox" id="layer-green" checked> Green Space
+                </label>
+                <label class="map-layer-control">
+                    <input type="checkbox" id="layer-mixed" checked> Mixed Use
+                </label>
+            </div>
+            
+            <div id="map-container"></div>
+            
+            <div class="map-coordinates">
+                Coordinates: <span id="coordinates">Click on map</span>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!--Leaflet plugins-->
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+    
+    <script src="script.js"></script>
+    <script src="leaflet-map.js"></script> <!--New map-specific JS-->
+</body>
+</html>
