@@ -1,4 +1,3 @@
-// leaflet-map.js - Simplified Leaflet Integration (No Save Feature)
 
 class CityMap {
     constructor() {
@@ -20,30 +19,29 @@ class CityMap {
     }
     
     init() {
-        // Initialize map
+        
         this.map = L.map('map-container').setView(this.currentLocation, 13);
         
-        // Add base map layer
+       
         this.baseLayers.standard = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors',
             maxZoom: 19
         }).addTo(this.map);
         
-        // Initialize zone layers
+       
         this.initZoneLayers();
         
-        // Setup event listeners
         this.setupEventListeners();
         
-        // Show coordinates
+       
         this.map.on('mousemove', this.showCoordinates.bind(this));
         
-        // Add click handler for zones
+        
         this.map.on('click', this.handleMapClick.bind(this));
     }
     
     initZoneLayers() {
-        // Create layer groups for each zone type
+        
         this.zoneLayers = {
             residential: L.layerGroup(),
             commercial: L.layerGroup(),
@@ -52,14 +50,14 @@ class CityMap {
             'mixed-use': L.layerGroup()
         };
         
-        // Add all zone layers to map
+        
         Object.values(this.zoneLayers).forEach(layer => {
             this.map.addLayer(layer);
         });
     }
     
     setupEventListeners() {
-        // Satellite toggle
+       
         const satelliteBtn = document.getElementById('satellite-toggle');
         if (satelliteBtn) {
             satelliteBtn.addEventListener('click', () => {
@@ -67,7 +65,7 @@ class CityMap {
             });
         }
         
-        // Draw mode toggle
+       
         const drawBtn = document.getElementById('draw-mode');
         if (drawBtn) {
             drawBtn.addEventListener('click', () => {
@@ -75,7 +73,7 @@ class CityMap {
             });
         }
         
-        // Clear map button
+       
         const clearBtn = document.getElementById('clear-map');
         if (clearBtn) {
             clearBtn.addEventListener('click', () => {
@@ -83,7 +81,7 @@ class CityMap {
             });
         }
         
-        // Measure distance button
+        
         const measureBtn = document.getElementById('measure-distance');
         if (measureBtn) {
             measureBtn.addEventListener('click', () => {
@@ -91,7 +89,7 @@ class CityMap {
             });
         }
         
-        // Layer visibility checkboxes
+       
         const layerControls = document.querySelectorAll('.map-layer-control input');
         layerControls.forEach(control => {
             control.addEventListener('change', (e) => {
@@ -105,7 +103,7 @@ class CityMap {
         const satelliteBtn = document.getElementById('satellite-toggle');
         
         if (!this.baseLayers.satellite) {
-            // Create satellite layer if it doesn't exist
+           
             this.baseLayers.satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 attribution: 'Tiles © Esri',
                 maxZoom: 19
@@ -115,13 +113,13 @@ class CityMap {
         const isSatellite = this.map.hasLayer(this.baseLayers.satellite);
         
         if (isSatellite) {
-            // Switch to standard view
+           
             this.map.removeLayer(this.baseLayers.satellite);
             this.map.addLayer(this.baseLayers.standard);
             satelliteBtn.textContent = 'Satellite View';
             satelliteBtn.classList.remove('active');
         } else {
-            // Switch to satellite view
+           
             this.map.removeLayer(this.baseLayers.standard);
             this.map.addLayer(this.baseLayers.satellite);
             satelliteBtn.textContent = 'Standard View';
@@ -147,19 +145,19 @@ class CityMap {
     }
     
     enableDrawMode() {
-        // Visual feedback
+       
         document.getElementById('map-container').classList.add('drawing-mode');
         
-        // Update status
+      
         this.updateStatus('Click on map to place zones. Current zone: ' + 
                          this.getZoneName(cityState.currentZone));
     }
     
     disableDrawMode() {
-        // Remove visual feedback
+       
         document.getElementById('map-container').classList.remove('drawing-mode');
         
-        // Update status
+       
         this.updateStatus('Click "Draw Zones" to start placing zones on map.');
     }
     
@@ -171,7 +169,7 @@ class CityMap {
     }
     
     addZoneToMap(latlng, zoneType) {
-        // Create a circle marker
+        
         const zoneMarker = L.circleMarker(latlng, {
             radius: 80, // 80 pixels radius
             color: this.zoneColors[zoneType],
@@ -180,7 +178,7 @@ class CityMap {
             weight: 2
         });
         
-        // Add popup with info
+        
         zoneMarker.bindPopup(`
             <div class="map-popup">
                 <h4>${this.getZoneName(zoneType)} Zone</h4>
@@ -192,20 +190,19 @@ class CityMap {
             </div>
         `);
         
-        // Store zone type in marker data
+       
         zoneMarker.zoneType = zoneType;
         
-        // Add to appropriate layer
         this.zoneLayers[zoneType].addLayer(zoneMarker);
         
-        // Visual feedback
+       
         zoneMarker.addTo(this.map);
         zoneMarker.openPopup();
         
-        // Update zone count in city state
+        
         this.updateZoneCount();
         
-        // Animation
+       
         zoneMarker.setStyle({
             radius: 100
         });
@@ -217,7 +214,7 @@ class CityMap {
     }
     
     removeZoneFromMap(lat, lng) {
-        // Find and remove marker at coordinates
+        
         Object.values(this.zoneLayers).forEach(layer => {
             layer.eachLayer((marker) => {
                 if (marker.getLatLng().lat === lat && marker.getLatLng().lng === lng) {
@@ -249,9 +246,9 @@ class CityMap {
     }
     
     startMeasurement() {
-        this.isDrawing = false; // Exit draw mode if active
+        this.isDrawing = false; 
         
-        // Simple distance measurement between two points
+       
         let points = [];
         let line = null;
         let totalDistance = 0;
@@ -264,39 +261,39 @@ class CityMap {
             points.push(e.latlng);
             
             if (points.length === 1) {
-                // First point
+                
                 L.marker(e.latlng).addTo(this.map)
                     .bindPopup('Start point')
                     .openPopup();
             } else if (points.length === 2) {
-                // Second point - draw line and calculate distance
+               
                 L.marker(e.latlng).addTo(this.map)
                     .bindPopup('End point')
                     .openPopup();
                 
-                // Draw line between points
+                
                 line = L.polyline(points, {
                     color: 'red',
                     weight: 3,
                     dashArray: '10, 10'
                 }).addTo(this.map);
                 
-                // Calculate distance in meters
+                
                 totalDistance = this.map.distance(points[0], points[1]);
                 
-                // Show distance
+                
                 const midpoint = this.getMidpoint(points[0], points[1]);
                 L.popup()
                     .setLatLng(midpoint)
                     .setContent(`Distance: ${totalDistance.toFixed(0)} meters<br>(${(totalDistance/1000).toFixed(2)} km)`)
                     .openOn(this.map);
                 
-                // Clean up
+                
                 this.map.off('click', clickHandler);
                 measureBtn.textContent = 'Measure Distance';
                 measureBtn.classList.remove('measuring');
                 
-                // Auto-remove after 5 seconds
+                
                 setTimeout(() => {
                     this.map.eachLayer((layer) => {
                         if (layer === line || 
@@ -329,7 +326,7 @@ class CityMap {
     }
     
     updateZoneCount() {
-        // Count zones by type
+      
         const zoneCounts = {};
         Object.keys(this.zoneLayers).forEach(zoneType => {
             zoneCounts[zoneType] = 0;
@@ -338,7 +335,7 @@ class CityMap {
             });
         });
         
-        // Update display if element exists
+       
         const zoneCountElement = document.getElementById('zone-count');
         if (zoneCountElement) {
             zoneCountElement.innerHTML = Object.entries(zoneCounts)
@@ -350,12 +347,12 @@ class CityMap {
     }
     
     updateCityMetrics() {
-        // Update city metrics based on map zones
+       
         if (typeof updateCityMetrics === 'function') {
             updateCityMetrics();
         }
         
-        // Also update zone count in the grid view
+       
         this.updateZoneCount();
     }
     
@@ -382,17 +379,17 @@ class CityMap {
     }
 }
 
-// Initialize map when page loads
+
 let cityMap;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize map when map page is shown
+
     const mapPage = document.getElementById('map-page');
     if (mapPage && mapPage.style.display !== 'none') {
         cityMap = new CityMap();
     }
     
-    // Navigation to map page
+
     const navButtons = document.querySelectorAll('.nav-btn');
     navButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -402,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('page-content').style.display = 'none';
                 document.getElementById('map-page').style.display = 'block';
                 
-                // Initialize map if not already done
+               
                 if (!cityMap) {
                     cityMap = new CityMap();
                 }
