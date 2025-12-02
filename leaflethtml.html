@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Planner Pro with Maps</title>
-
+    <title>Urban Planning Zone Explorer</title>
+    
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="finalstyle.css">
+    
     <style>
-      
+        /* Map-specific styles that won't be in the external CSS */
         #map-container {
             height: 400px;
             width: 100%;
@@ -16,6 +20,12 @@
             margin: var(--space-lg) 0;
             border: 2px solid var(--border);
             box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+        
+        #map-container.drawing-mode {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
         }
         
         .map-controls {
@@ -25,52 +35,202 @@
             margin-bottom: var(--space-md);
         }
         
+        .map-layer-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            margin: var(--space-md) 0;
+            padding: var(--space-md);
+            background: var(--off-white);
+            border-radius: var(--radius-md);
+        }
+        
         .map-layer-control {
             display: flex;
             align-items: center;
             gap: var(--space-xs);
             cursor: pointer;
+            font-size: 0.9rem;
         }
         
-        .leaflet-container {
+        .map-info {
+            margin-top: var(--space-md);
+            padding: var(--space-md);
+            background: var(--off-white);
+            border-radius: var(--radius-md);
+        }
+        
+        .map-popup {
             font-family: var(--font-base);
+            padding: var(--space-sm);
+            min-width: 150px;
         }
         
-        .zone-marker {
-            border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: var(--shadow-md);
+        .map-popup h4 {
+            margin: 0 0 var(--space-xs) 0;
+            color: var(--dark);
         }
         
-        @media (max-width: 768px) {
-            #map-container {
-                height: 300px;
-            }
+        .remove-zone-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: var(--space-xs);
+            width: 100%;
+        }
+        
+        .remove-zone-btn:hover {
+            background: #C82333;
+        }
+        
+        .beta-tag {
+            font-size: 0.7em;
+            background: var(--accent);
+            color: var(--dark);
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .zone-count-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 5px;
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="container header-content">
-            <h1>City Planner Pro <span class="beta-tag">(with Maps)</span></h1>
+            <h1>Urban Planning Zone Explorer <span class="beta-tag">Beta</span></h1>
             <nav class="nav">
-                <button class="nav-btn active" data-page="home">Home</button>
-                <button class="nav-btn" data-page="zoning">Zoning</button>
+                <button class="nav-btn active" data-page="dashboard">Dashboard</button>
+                <button class="nav-btn" data-page="planner">Zone Planner</button>
                 <button class="nav-btn" data-page="map">Map View</button>
                 <button class="nav-btn" data-page="analytics">Analytics</button>
             </nav>
         </div>
     </header>
 
+    <!-- Main Content -->
     <div class="container main-content">
-        <!-- Page Content (dynamically loaded) -->
-        <div id="page-content">
-            <!-- Home page will load here -->
-        </div>
         
-        <!-- Map View -->
-        <div id="map-page" style="display: none;">
-            <h2>Interactive City Map</h2>
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page active">
+            <h2>City Dashboard</h2>
+            
+            <div class="dashboard">
+                <div class="metrics-panel">
+                    <h3>City Metrics</h3>
+                    <div class="metric">
+                        <div class="metric-label">👥 Population</div>
+                        <div class="metric-value" id="population">0</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">🏘️ Zoning Score</div>
+                        <div class="metric-value" id="zoning-score">0%</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">🌿 Sustainability</div>
+                        <div class="metric-value" id="sustainability">0%</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">💼 Employment</div>
+                        <div class="metric-value" id="employment">0</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">🚗 Traffic</div>
+                        <div class="metric-value" id="traffic">50%</div>
+                    </div>
+                </div>
+                
+                <div class="city-overview">
+                    <h3>City Overview</h3>
+                    <div class="city-grid" id="dashboard-grid">
+                        <!-- Grid will be generated by JavaScript -->
+                    </div>
+                    <div class="status-message" id="dashboard-status">
+                        Welcome to Urban Planning Zone Explorer!
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="action-btn primary-btn" id="quick-reset">Reset City</button>
+                    <button class="action-btn secondary-btn" id="quick-calc">Calculate Metrics</button>
+                    <button class="action-btn secondary-btn" id="quick-report">Generate Report</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone Planner Page -->
+        <div id="planner-page" class="page">
+            <h2>Zone Planning</h2>
+            
+            <div class="zone-controls">
+                <h3>Select Zone Type</h3>
+                <div class="zone-buttons">
+                    <button class="zone-btn residential active" data-zone="residential">Residential</button>
+                    <button class="zone-btn commercial" data-zone="commercial">Commercial</button>
+                    <button class="zone-btn industrial" data-zone="industrial">Industrial</button>
+                    <button class="zone-btn green-space" data-zone="green-space">Green Space</button>
+                    <button class="zone-btn mixed-use" data-zone="mixed-use">Mixed Use</button>
+                </div>
+                
+                <div class="current-zone-indicator">
+                    <p>Current Zone: <strong id="current-zone-name">Residential</strong></p>
+                    <div class="zone-preview" id="current-zone-preview"></div>
+                </div>
+            </div>
+            
+            <div class="planning-grid-section">
+                <h3>Planning Grid (5x5)</h3>
+                <div class="city-grid" id="planner-grid">
+                    <!-- Grid will be generated by JavaScript -->
+                </div>
+                <p class="instruction">Click on grid cells to assign zones. Click again to remove.</p>
+            </div>
+            
+            <div class="planning-actions">
+                <h3>Planning Tools</h3>
+                <div class="action-buttons">
+                    <button class="action-btn primary-btn" id="plan-reset">Clear All Zones</button>
+                    <button class="action-btn secondary-btn" id="plan-fill">Fill Random</button>
+                    <button class="action-btn secondary-btn" id="plan-balance">Balance Zones</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map View Page -->
+        <div id="map-page" class="page">
+            <h2>Interactive City Map <span class="beta-tag">Leaflet.js</span></h2>
+            
             <div class="map-controls">
                 <button id="satellite-toggle" class="action-btn secondary-btn">
                     Satellite View
@@ -88,37 +248,151 @@
             
             <div class="map-layer-controls">
                 <label class="map-layer-control">
-                    <input type="checkbox" id="layer-residential" checked> Residential
+                    <input type="checkbox" id="layer-residential" checked> 
+                    <span class="legend-color residential"></span>
+                    Residential
                 </label>
                 <label class="map-layer-control">
-                    <input type="checkbox" id="layer-commercial" checked> Commercial
+                    <input type="checkbox" id="layer-commercial" checked>
+                    <span class="legend-color commercial"></span>
+                    Commercial
                 </label>
                 <label class="map-layer-control">
-                    <input type="checkbox" id="layer-industrial" checked> Industrial
+                    <input type="checkbox" id="layer-industrial" checked>
+                    <span class="legend-color industrial"></span>
+                    Industrial
                 </label>
                 <label class="map-layer-control">
-                    <input type="checkbox" id="layer-green" checked> Green Space
+                    <input type="checkbox" id="layer-green" checked>
+                    <span class="legend-color green-space"></span>
+                    Green Space
                 </label>
                 <label class="map-layer-control">
-                    <input type="checkbox" id="layer-mixed" checked> Mixed Use
+                    <input type="checkbox" id="layer-mixed" checked>
+                    <span class="legend-color mixed-use"></span>
+                    Mixed Use
                 </label>
             </div>
             
             <div id="map-container"></div>
             
-            <div class="map-coordinates">
-                Coordinates: <span id="coordinates">Click on map</span>
+            <div class="map-info">
+                <h3>Map Information</h3>
+                <p><strong>Zone Count:</strong> 
+                    <span id="zone-count">No zones placed</span>
+                </p>
+                <p><strong>Coordinates:</strong> 
+                    <span id="coordinates">Click on map to see coordinates</span>
+                </p>
+                <p><strong>Status:</strong> 
+                    <span id="map-status" class="status-info">Select a zone type and click "Draw Zones" to start</span>
+                </p>
+            </div>
+            
+            <div class="map-legend">
+                <h3>Zone Legend</h3>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color residential"></div>
+                        <span>Residential</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color commercial"></div>
+                        <span>Commercial</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color industrial"></div>
+                        <span>Industrial</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color green-space"></div>
+                        <span>Green Space</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color mixed-use"></div>
+                        <span>Mixed Use</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Page -->
+        <div id="analytics-page" class="page">
+            <h2>City Analytics</h2>
+            
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <h3>Zone Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="zone-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Metric Trends</h3>
+                    <div class="chart-container">
+                        <canvas id="metric-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Recommendations</h3>
+                    <div class="recommendations" id="recommendations">
+                        <p>Start building your city to see recommendations!</p>
+                    </div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Key Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-label">Total Zones</div>
+                            <div class="stat-value" id="total-zones">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Empty Spaces</div>
+                            <div class="stat-value" id="empty-spaces">25</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Zone Efficiency</div>
+                            <div class="stat-value" id="zone-efficiency">0%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">City Density</div>
+                            <div class="stat-value" id="city-density">Low</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="analytics-actions">
+                <h3>Export & Share</h3>
+                <div class="action-buttons">
+                    <button class="action-btn secondary-btn" id="export-data">Export Data (JSON)</button>
+                    <button class="action-btn secondary-btn" id="print-report">Print Report</button>
+                    <button class="action-btn primary-btn" id="share-city">Share City</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>Urban Planning Zone Explorer | Web Programming Final Project</p>
+                <p class="text-muted">Uses Leaflet.js for interactive mapping | Built with HTML, CSS, and JavaScript</p>
+            </div>
+        </div>
+    </footer>
 
+    <!-- Scripts -->
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!--Leaflet plugins-->
-    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
     
+    <!-- Custom JavaScript -->
     <script src="script.js"></script>
-    <script src="leaflet-map.js"></script> <!--New map-specific JS-->
+    <script src="leaflet-map.js"></script>
+    <script src="analytics.js"></script>
 </body>
 </html>
