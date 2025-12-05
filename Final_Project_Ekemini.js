@@ -207,3 +207,115 @@ class CityMap {
 }
 
 window.cityMap = cityMap;
+
+// ANALYTICS SYSTEM
+
+let zoneChart = null;
+let metricChart = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateAnalytics();
+});
+
+function getZoneCounts() {
+    const counts = {
+        residential: 0,
+        commercial: 0,
+        industrial: 0,
+        "green-space": 0,
+        "mixed-use": 0,
+        empty: 0
+    };
+
+    cityState.grid.forEach(z => {
+        counts[z] = (counts[z] || 0) + 1;
+    });
+
+    return counts;
+}
+
+
+function updateStatistics(counts) {
+    const filled = 25 - counts.empty;
+    const efficiency = Math.round((filled / 25) * 100);
+
+    document.getElementById("total-zones").textContent = filled;
+    document.getElementById("empty-spaces").textContent = counts.empty;
+    document.getElementById("zone-efficiency").textContent = efficiency + "%";
+    document.getElementById("city-density").textContent =
+        filled < 8 ? "Low" : filled < 18 ? "Medium" : "High";
+}
+
+
+function updateZoneChart(counts) {
+    const ctx = document.getElementById("zone-chart").getContext("2d");
+
+    if (zoneChart) zoneChart.destroy();
+
+    zoneChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: ["Residential", "Commercial", "Industrial", "Green Space", "Mixed Use"],
+            datasets: [{
+                data: [
+                    counts.residential,
+                    counts.commercial,
+                    counts.industrial,
+                    counts["green-space"],
+                    counts["mixed-use"]
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+}
+
+
+function updateMetricChart() {
+    const m = cityState.metrics;
+    const ctx = document.getElementById("metric-chart").getContext("2d");
+
+    if (metricChart) metricChart.destroy();
+
+    metricChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Population", "Zoning Score", "Sustainability", "Employment", "Traffic"],
+            datasets: [{
+                data: [
+                    m.population,
+                    m.zoningScore,
+                    m.sustainability,
+                    m.employment,
+                    m.traffic
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+
+function updateAnalytics() {
+    const counts = getZoneCounts();
+
+    updateStatistics(counts);
+    updateZoneChart(counts);
+    updateMetricChart();
+}
+
+
+const oldUpdateCityMetrics = updateCityMetrics;
+updateCityMetrics = function() {
+    oldUpdateCityMetrics();
+    updateAnalytics();
+};
