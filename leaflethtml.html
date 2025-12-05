@@ -189,6 +189,39 @@
     </div>
 </div>
 
+    <!-- Zone Planner -->
+    <div id="planner-page" class="page">
+    <h2>Zone Planner</h2>
+
+    <div class="zone-controls">
+        <h3>Select a Zone Type</h3>
+
+        <div class="zone-buttons">
+            <button class="zone-btn residential" data-zone="residential">Residential</button>
+            <button class="zone-btn commercial" data-zone="commercial">Commercial</button>
+            <button class="zone-btn industrial" data-zone="industrial">Industrial</button>
+            <button class="zone-btn green-space" data-zone="green-space">Green Space</button>
+            <button class="zone-btn mixed-use" data-zone="mixed-use">Mixed Use</button>
+        </div>
+
+        <div class="current-zone-indicator">
+            <strong>Current Zone:</strong>
+            <span id="current-zone-name">Residential</span>
+            <div id="current-zone-preview" class="zone-preview residential"></div>
+        </div>
+    </div>
+
+    <div class="planning-grid-section">
+        <h3>Planning Grid</h3>
+        <div class="city-grid" id="planner-grid"></div>
+
+        <div class="planning-actions action-buttons">
+            <button class="action-btn secondary-btn" id="plan-fill">Auto-Fill City</button>
+            <button class="action-btn danger-btn" id="plan-reset">Clear Planner</button>
+        </div>
+    </div>
+</div>
+        
         <!-- Map View Page -->
         <div id="map-page" class="page">
             <h2>Interactive City Map <span class="beta-tag">Leaflet.js</span></h2>
